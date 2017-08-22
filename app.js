@@ -14,6 +14,7 @@ const port = appConfig.port;
 const docRoot = appConfig.docRoot;
 
 app.use('/favicon.ico', express.static('./public/favicon.ico'));
+app.use('/assets', express.static('./public/assets'));
 
 app.get('/', (req,res) => {
   console.log(req.url);
