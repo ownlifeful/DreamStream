@@ -19,7 +19,7 @@ Edit the config.yml file and specify required parameters.
 Install dependencies.
 
         cd DreamStream
-        npm Install
+        npm install
 
 Launch the application.
 
