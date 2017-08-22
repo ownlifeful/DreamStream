@@ -10,16 +10,17 @@ Clone the application:
 
     git clone https://github.com/ownlifeful/DreamStream.git
 
+Install dependencies.
+
+    cd DreamStream
+    npm install
+
 
 Edit the config.yml file and specify required parameters.
 
     port: 3000
     docRoot: /path/to/your/music/directory
 
-Install dependencies.
-
-        cd DreamStream
-        npm install
 
 Launch the application.
 
