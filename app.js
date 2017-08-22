@@ -13,7 +13,7 @@ const appConfig = YAML.load('config.yml');
 const port = appConfig.port;
 const docRoot = appConfig.docRoot;
 
-// app.use(express.static('./public'));
+app.use(express.static('./public'));
 
 app.get('/', (req,res) => {
   console.log(req.url);
