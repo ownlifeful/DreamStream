@@ -7,6 +7,7 @@ const mime = require('mime-types');
 const readConfig = require('./readConfig')
 const port = readConfig.port();
 const docRoot = readConfig.docRoot();
+const hostName = readConfig.hostName();
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -15,13 +16,15 @@ app.set('view engine', 'ejs');
 app.use('/favicon.ico', express.static('./public/favicon.ico'));
 app.use('/assets', express.static('./public/assets'));
 
-let subDirs = [];
+
 app.get('/', (req,res) => {
   console.log(req.url);
   fs.readdir(docRoot, (err, files) => {
     let musicFiles = files.filter((file) => {
       return file.match(/\.(m4a|mp3)$/)
     });
+
+    let subDirs = [];
     files.forEach(
       (file) => {
         let dir = docRoot + '/' + file;
@@ -57,6 +60,6 @@ app.get('/play/:file', (req,res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, hostName, () => {
   console.log("Listening on port:" + port);
 });
