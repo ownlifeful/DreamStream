@@ -8,18 +8,18 @@ A minimal audio streaming server.
 
 2. Clone the application:
 
-    git clone https://github.com/ownlifeful/DreamStream.git
+        git clone https://github.com/ownlifeful/DreamStream.git
 
 3. Install dependencies.
 
-    cd DreamStream
-    npm install
+        cd DreamStream
+        npm install
 
 
 4. Edit the `config.yml` file and specify required parameters.
 
-    port: 3000
-    docRoot: /path/to/your/music/directory
+        port: 3000
+        docRoot: /path/to/your/music/directory
 
 
 5. Launch the application.
