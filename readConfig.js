@@ -30,3 +30,14 @@ module.exports.docRoot = function() {
 
   return docRoot;
 }
+
+module.exports.hostName = function() {
+  let hostName = appConfig.hostName;
+  let re = /\w/;
+  if ( ! re.test(hostName) ) {
+    let message = 'ERROR in config.yml: hostName [' + hostName + '] is not valid.';
+    console.log(message);
+    hostName = 'music.ownlifeful.com';
+  }
+  return hostName;
+}
