@@ -22,6 +22,7 @@
 
   <div class="jumbotron"><H1>Welcome to DreamStream</H1></div>
 
+<div>
   <% if ( files.length > 0 ) { %>
     <table class="table table-responsive table-hover">
       <tr>
@@ -38,8 +39,19 @@
   <% } else { %>
 <P>There are no files on this server.</P>
   <% } %>
+</div>
 
 <div>
+  <% if ( dirs.length > 0 ) { %>
+    <table class="table table-responsive table-hover">
+      <% for (let i=0; i < dirs.length; i++) { %>
+        <tr>
+          <td><i class="glyphicon glyphicon-menu-right"></i></td>
+          <td><A HREF="/dir/<%= dirs[i].replace(/ /g, '+')%>"><%= dirs[i] %></A></td>
+        </tr>
+      <% } %>
+    </table>
+  <% } %>
 </div>
 
 <div align="left">

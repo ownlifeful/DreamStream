@@ -59,3 +59,5 @@ typings/
 
 # Junk drawer
 junk/
+
+.DS_Store
