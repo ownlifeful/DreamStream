@@ -16,7 +16,7 @@ Install dependencies.
     npm install
 
 
-Edit the config.yml file and specify required parameters.
+Edit the `config.yml` file and specify required parameters.
 
     port: 3000
     docRoot: /path/to/your/music/directory
@@ -25,3 +25,7 @@ Edit the config.yml file and specify required parameters.
 Launch the application.
 
         node app
+
+Point your browser to http://localhost:3000/ or the appropriate URL for your server. Enjoy!
+
+![Ashwin Dixit](/public/assets/images/Ashwin_Dixit.png)
