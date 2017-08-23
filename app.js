@@ -16,14 +16,12 @@ app.use('/favicon.ico', express.static('./public/favicon.ico'));
 app.use('/assets', express.static('./public/assets'));
 
 let subDirs = [];
-
 app.get('/', (req,res) => {
   console.log(req.url);
   fs.readdir(docRoot, (err, files) => {
     let musicFiles = files.filter((file) => {
       return file.match(/\.(m4a|mp3)$/)
     });
-
     files.forEach(
       (file) => {
         let dir = docRoot + '/' + file;

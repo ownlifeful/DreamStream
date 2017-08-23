@@ -47,7 +47,7 @@
       <% for (let i=0; i < dirs.length; i++) { %>
         <tr>
           <td><i class="glyphicon glyphicon-menu-right"></i></td>
-          <td><A HREF="/dir/<%= dirs[i].replace(/ /g, '+')%>"><%= dirs[i] %></A></td>
+          <td><A HREF="/dir<%= dirs[i].replace(/ /g, '+')%>"><%= dirs[i] %></A></td>
         </tr>
       <% } %>
     </table>
