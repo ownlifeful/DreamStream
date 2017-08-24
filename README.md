@@ -1,6 +1,7 @@
 # DreamStream
 A minimal audio streaming server.
 
+( This is currently a work in progress. )
 
 ## Installation
 
