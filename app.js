@@ -43,8 +43,19 @@ function showIndex(req,res,next) {
     // get subDirs
     let subDirs = files
     .map((file) => {
-        return {
-          short: dirname + '/' + file,
+
+      let shortDirX = dirName + '/' + file;
+
+//      console.log("XXX shortDirX BEFORE: " + shortDirX);
+//      shortDirX.replace(/ /g, '+');
+//      console.log("YYY shortDirX AFTER: " + shortDirX);
+
+      if ( ! /^\//.test(shortDirX) ) {
+        shortDirX = '/' + shortDirX;
+      }
+
+      return {
+          short: shortDirX,
           base: path.basename(file),
           full: musicRoot + '/' + file
         }
@@ -54,46 +65,46 @@ function showIndex(req,res,next) {
 
     let crumbs = musicRoot.split('/');
 
-    // console.log("subDirs:" + JSON.stringify(subDirs,null,2));
+    console.log("subDirs:" + JSON.stringify(subDirs,null,2));
     console.log('INDEX: Got ' + musicFiles.length + ' files.');
     console.log("INDEX: musicRoot:" + musicRoot);
-    console.log("INDEX: dirname:" + dirname);
+    console.log("INDEX: dirName:" + dirName);
     res.render('index',
       {
         files: musicFiles,
         dirs: subDirs,
         crumbs: crumbs,
-        dirname: ( dirname ? dirname.replace(/ /g, '+') + '/' : '' )
+        dirName: ( dirName ? dirName.replace(/ /g, '+') + '/' : '' )
       });
   }); // fs.readdir
 
 }
 
-let dirname = '';
+let dirName = '';
 let musicRoot = '';
 
 app.get('/', (req,res,next) => {
   musicRoot = docRoot + '/';
-  dirname = '';
-  console.log("ROOT dirname:" + dirname);
+  dirName = '';
+  console.log("ROOT dirName:" + dirName);
   console.log("ROOT musicRoot:" + musicRoot);
   next();
 },
 showIndex); // app.get
 
 app.get('/dir/*', (req,res,next) => {
-  dirname = req.url;
-  dirname = dirname.replace(/^\/dir\//, '');
-  dirname = dirname.replace(/\+/g, ' ');
-  musicRoot = docRoot + '/' + dirname;
-  console.log("DIR dirname:" + dirname);
+  dirName = req.url;
+  dirName = dirName.replace(/^\/dir\//, '');
+  dirName = dirName.replace(/\+/g, ' ');
+  musicRoot = docRoot + '/' + dirName;
+  console.log("DIR dirName:" + dirName);
   console.log("DIR musicRoot:" + musicRoot);
   next();
 }, showIndex); // app.get dir
 
 app.get('/play/*', (req,res) => {
 
-  dirname = '';
+  dirName = '';
   musicRoot = docRoot;
 
   let file = req.url;

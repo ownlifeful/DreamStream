@@ -20,7 +20,13 @@
 <body>
 <div class="container">
 
-  <div class="jumbotron"><H1>Welcome to DreamStream</H1></div>
+<div class="jumbotron"><H1>Welcome to DreamStream</H1></div>
+
+<% if ( crumbs.length > 1 ) { %>
+<div>
+  <%= crumbs.join(' / ')  %>
+</div>
+<% } %>
 
 <div>
   <% if ( files.length > 0 ) { %>
@@ -32,7 +38,7 @@
       <% for (let i=0; i < files.length; i++) { %>
         <tr>
           <th scope="row"><%= i + 1 %></th>
-          <td><A HREF="/play/<%= dirname + files[i].replace(/ /g, '+')%>"><%= files[i] %></A></td>
+          <td><A HREF="/play/<%= dirName + files[i].replace(/ /g, '+')%>"><%= files[i] %></A></td>
         </tr>
       <% } %>
     </table>
@@ -47,7 +53,7 @@
       <% for (let i=0; i < dirs.length; i++) { %>
         <tr>
           <td><i class="glyphicon glyphicon-hand-right"></i>
-          <A HREF="/dir/<%= dirs[i].short.replace(/ /g, '+')%>"><%= dirs[i].base %></A></td>
+          <A HREF="/dir<%= dirs[i].short.replace(/ /g, '+') %>"><%= dirs[i].base %></A></td>
         </tr>
       <% } %>
     </table>
