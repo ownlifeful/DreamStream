@@ -5,8 +5,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<style>
+#errors { margin-left: 20px; margin-top: 20px; font-family: sans-serif; }
+</style>
 <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -16,8 +18,11 @@
 </head>
 <body>
 <div class="container">
+
+<div id="errors">
 <P>The file you requested ( <TT><%= file %></TT> ) could not be found.</P>
 <P>You can't always get what you want.</P>
+</div>
 
 <%- include('partials/footer') %>
 

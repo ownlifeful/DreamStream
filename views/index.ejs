@@ -32,7 +32,7 @@
       <% for (let i=0; i < files.length; i++) { %>
         <tr>
           <th scope="row"><%= i + 1 %></th>
-          <td><A HREF="/play/<%= files[i].replace(/ /g, '+')%>"><%= files[i] %></A></td>
+          <td><A HREF="/play/<%= dirname + files[i].replace(/ /g, '+')%>"><%= files[i] %></A></td>
         </tr>
       <% } %>
     </table>
@@ -46,8 +46,8 @@
     <table class="table table-responsive table-hover">
       <% for (let i=0; i < dirs.length; i++) { %>
         <tr>
-          <td><i class="glyphicon glyphicon-menu-right"></i></td>
-          <td><A HREF="/dir<%= dirs[i].replace(/ /g, '+')%>"><%= dirs[i] %></A></td>
+          <td><i class="glyphicon glyphicon-hand-right"></i>
+          <A HREF="/dir/<%= dirs[i].short.replace(/ /g, '+')%>"><%= dirs[i].base %></A></td>
         </tr>
       <% } %>
     </table>

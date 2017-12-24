@@ -16,6 +16,9 @@ module.exports.port = function() {
 
 module.exports.docRoot = function() {
   let docRoot = appConfig.docRoot;
+
+  docRoot.replace(/\/$/, '');
+
   fs.stat(docRoot, (err, stats) => {
     if (err) {
         console.log("ERROR in config.yml: docRoot [" + docRoot + "] not valid.");

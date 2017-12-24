@@ -2,6 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const ejs = require('ejs');
 const mime = require('mime-types');
+const path = require('path');
 
 // read configuration parameters
 const readConfig = require('./readConfig')
@@ -12,54 +13,109 @@ const hostName = readConfig.hostName();
 const app = express();
 app.set('view engine', 'ejs');
 
-
+// Static routes
 app.use('/favicon.ico', express.static('./public/favicon.ico'));
 app.use('/assets', express.static('./public/assets'));
 
 
-app.get('/', (req,res) => {
-  console.log(req.url);
-  fs.readdir(docRoot, (err, files) => {
-    let musicFiles = files.filter((file) => {
-      return file.match(/\.(m4a|mp3)$/)
-    });
+function showIndex(req,res,next) {
+  console.log('INDEX: req.url:' + req.url);
+  fs.readdir(musicRoot, (err, files) => {
 
-    let subDirs = [];
-    files.forEach(
-      (file) => {
-        let dir = docRoot + '/' + file;
-        console.log("dir:" + dir);
-        fs.stat(dir, (err, stats) => {
-          if (err) throw err;
-          // console.log(JSON.stringify(stats,null,2));
-          if ( stats.isDirectory() ) {
-            console.log(dir + ": is a directory.");
-            subDirs.push(dir);
-          } else {
-            console.log(dir + ": is NOT a directory.");
-          }
-        });
+    if (err) {
+      console.log(err);
+      throw err;
     }
-  ); // app.get
 
-  console.log("subDirs:" + JSON.stringify(subDirs,null,2));
-  console.log('Got ' + musicFiles.length + ' files.');
-  res.render('index', {files: musicFiles, dirs: subDirs});
-})
-});
+    if ( ! files ) {
+      let errMessage = "ERROR: There are no files in directory [" + musicRoot + "]";
+      console.log(errMessage);
+      throw errMessage;
+    }
 
-app.get('/play/:file', (req,res) => {
-  let file = req.params.file.replace(/\+/g, ' ');
-  console.log("requested:" + file);
-  if ( ! fs.existsSync( docRoot + '/' + file)) {
-    res.render('404', {file: file});
-  } else {
-    let readStream = fs.createReadStream( docRoot + '/' + file);
-    res.set('Content-Type', mime.contentType(file) );
+    // get musicFiles
+    let musicFiles = files.filter((file) => {
+      // console.log("music:" + file);
+      return /\.(m4a|mp3)$/.test(file);
+    });
+    // console.log("musicFiles:" + JSON.stringify(musicFiles,null,2));
+
+    // get subDirs
+    let subDirs = files
+    .map((file) => {
+        return {
+          short: dirname + '/' + file,
+          base: path.basename(file),
+          full: musicRoot + '/' + file
+        }
+      }
+    )
+    .filter((dir) => fs.statSync(dir.full).isDirectory());
+
+    let crumbs = musicRoot.split('/');
+
+    // console.log("subDirs:" + JSON.stringify(subDirs,null,2));
+    console.log('INDEX: Got ' + musicFiles.length + ' files.');
+    console.log("INDEX: musicRoot:" + musicRoot);
+    console.log("INDEX: dirname:" + dirname);
+    res.render('index',
+      {
+        files: musicFiles,
+        dirs: subDirs,
+        crumbs: crumbs,
+        dirname: ( dirname ? dirname.replace(/ /g, '+') + '/' : '' )
+      });
+  }); // fs.readdir
+
+}
+
+let dirname = '';
+let musicRoot = '';
+
+app.get('/', (req,res,next) => {
+  musicRoot = docRoot + '/';
+  dirname = '';
+  console.log("ROOT dirname:" + dirname);
+  console.log("ROOT musicRoot:" + musicRoot);
+  next();
+},
+showIndex); // app.get
+
+app.get('/dir/*', (req,res,next) => {
+  dirname = req.url;
+  dirname = dirname.replace(/^\/dir\//, '');
+  dirname = dirname.replace(/\+/g, ' ');
+  musicRoot = docRoot + '/' + dirname;
+  console.log("DIR dirname:" + dirname);
+  console.log("DIR musicRoot:" + musicRoot);
+  next();
+}, showIndex); // app.get dir
+
+app.get('/play/*', (req,res) => {
+
+  dirname = '';
+  musicRoot = docRoot;
+
+  let file = req.url;
+  // console.log('file0:[' + file + ']'); // DEBUG
+  file = file.replace(/^\/play\//, '');
+  // console.log('file1:[' + file + ']'); // DEBUG
+  file = file.replace(/\+/g, ' ');
+  console.log("PLAY: requested:" + file);
+  let fileFullname = musicRoot + '/' + file;
+  console.log("PLAY: musicRoot:" + musicRoot);
+  console.log("PLAY: requested fileFullname:" + fileFullname);
+
+  if ( fs.existsSync( fileFullname )) {
+    let readStream = fs.createReadStream( fileFullname );
+    res.set('Content-Type', mime.contentType( path.basename(file) ) );
     readStream.pipe(res);
+  } else {
+    res.render('404', {file: file});
   }
 });
 
-app.listen(port, hostName, () => {
+
+app.listen(port, () => {
   console.log("Listening on port:" + port);
 });
