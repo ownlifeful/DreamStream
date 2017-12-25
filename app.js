@@ -44,18 +44,13 @@ function showIndex(req,res,next) {
     let subDirs = files
     .map((file) => {
 
-      let shortDirX = dirName + '/' + file;
-
-//      console.log("XXX shortDirX BEFORE: " + shortDirX);
-//      shortDirX.replace(/ /g, '+');
-//      console.log("YYY shortDirX AFTER: " + shortDirX);
-
-      if ( ! /^\//.test(shortDirX) ) {
-        shortDirX = '/' + shortDirX;
+      let shortDir = dirName + '/' + file;
+      if ( ! /^\//.test(shortDir) ) {
+        shortDir = '/' + shortDir;
       }
 
       return {
-          short: shortDirX,
+          short: shortDir,
           base: path.basename(file),
           full: musicRoot + '/' + file
         }
